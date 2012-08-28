@@ -13,6 +13,7 @@ class SupervisorClient
     private $_hostname = null;
     private $_port = null;
     private $_timeout = null;
+    private $_socket = null;
 
     /**
      * Construct a supervisor client instance.
@@ -181,25 +182,33 @@ class SupervisorClient
 
     private function _rpcCall($method, $args=null)
     {
-        $sock = fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
+        // Open socket if needed.
 
-        if (!$sock) {
-            throw new Exception(printf("Cannot open socket: Error %d: \"%s\""), $errno, $errstr);
+        if (is_null($this->_socket)) {
+            $this->_socket = fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
+
+            if (!$this->_socket) {
+                throw new Exception(printf("Cannot open socket: Error %d: \"%s\""), $errno, $errstr);
+            }
         }
+
+        // Send request.
 
         $xml_rpc = xmlrpc_encode_request("supervisor.$method", $args, array('encoding'=>'utf-8'));
         $http_request = "POST /RPC2 HTTP/1.1\r\n".
                         "Content-Length: " . strlen($xml_rpc) .
                         "\r\n\r\n" .
                         $xml_rpc;
-        fwrite($sock, $http_request);
+        fwrite($this->_socket, $http_request);
+
+        // Receive response.
 
         $http_response = '';
         $header_length = null;
         $content_length = null;
 
         do {
-            $http_response .= fread($sock, self::chunkSize);
+            $http_response .= fread($this->_socket, self::chunkSize);
 
             if (is_null($header_length)) {
                 $header_length = strpos($http_response, "\r\n\r\n");
@@ -226,6 +235,8 @@ class SupervisorClient
             $body_length = strlen($http_response) - $body_start_pos;
 
         } while ($body_length < $content_length);
+
+        // Parse response.
 
         $body = substr($http_response, $body_start_pos);
         $response = xmlrpc_decode($body);
