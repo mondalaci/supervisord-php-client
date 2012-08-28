@@ -8,8 +8,13 @@ Usage
 
 ```php
 require 'SupervisorClient.php';
-$supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');  // for [unix_http_server] config
-$supervisor = new SupervisorClient('YourDomain.com', 9001);  // for [inet_http_server] config
+
+// For http://supervisord.org/configuration.html#unix-http-server-section-values
+$supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
+
+// For http://supervisord.org/configuration.html#inet-http-server-section-values
+$supervisor = new SupervisorClient('YourDomain.com', 9001);
+
 $all_process_info = $supervisor->getAllProcessInfo();  
 var_dump($all_process_info);
 ```
