@@ -12,12 +12,13 @@ Include the library:
 require 'SupervisorClient.php';
 ```
 
-For [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
+Instantiate the client for [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 ```
+- or -
 
-For [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
+Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
 ```
