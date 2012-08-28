@@ -6,11 +6,13 @@ A PHP client library for [supervisor](http://supervisord.org) which utilizes its
 Usage
 -----
 
+Include the library:
+
 ```php
 require 'SupervisorClient.php';
 ```
 
-For http://supervisord.org/configuration.html#unix-http-server-section-values
+For [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 ```
@@ -20,12 +22,14 @@ For [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-ser
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
 ```
 
+Make an RPC call and dump its result:
+
 ```php
 $all_process_info = $supervisor->getAllProcessInfo();  
 var_dump($all_process_info);
 ```
 
-Result:
+The dumped result of the RPC call:
 
 ```
 array(2) {
