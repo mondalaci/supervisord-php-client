@@ -26,7 +26,7 @@ $supervisor = new SupervisorClient('YourDomain.com', 9001);
 3) Make an RPC call and dump its result:
 
 ```php
-$all_process_info = $supervisor->getAllProcessInfo();  
+$all_process_info = $supervisor->getAllProcessInfo();
 var_dump($all_process_info);
 ```
 
