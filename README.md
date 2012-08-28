@@ -6,7 +6,7 @@ A PHP client library for [supervisor](http://supervisord.org) which utilizes its
 Usage
 -----
 
-```
+```php
 require 'SupervisorClient.php';
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 $all_process_info = $supervisor->getAllProcessInfo();
