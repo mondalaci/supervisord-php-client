@@ -1,7 +1,7 @@
 supervisord-php-client
 ======================
 
-A PHP client library for [supervisor](http://supervisord.org) which utilizes its [XML-RPC interface](http://supervisord.org/api.html).
+A PHP client library for [supervisor](http://supervisord.org) which utilizes [its XML-RPC interface](http://supervisord.org/api.html).
 
 Usage
 -----
