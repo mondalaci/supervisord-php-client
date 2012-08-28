@@ -1,16 +1,32 @@
 <?php
 
-// For more information regarding these calls visit http://supervisord.org/api.html
+/**
+ * Client library for supervisor <http://supervisord.org>
+ *
+ * For more information regarding these calls visit http://supervisord.org/api.html
+ */
 
 class SupervisorClient
 {
     const chunkSize = 8192;
 
-    private $_socketPath = NULL;
+    private $_hostname = null;
+    private $_port = null;
+    private $_timeout = null;
 
-    function __construct($socketPath)
+    /**
+     * Construct a supervisor client instance.
+     * These parameters are handed over to fsockopen() so refer to its documentation for further details.
+     *
+     * @param string $hostname  The hostname.
+     * @param int $port  The port number.
+     * @param float $timeout  The connection timeout, in seconds.
+     */
+    function __construct($hostname, $port=-1, $timeout=null)
     {
-        $this->_socketPath = $socketPath;
+        $this->_hostname = $hostname;
+        $this->_port = $port;
+        $this->_timeout = $timeout;
     }
 
     // Status and Control methods
@@ -165,9 +181,7 @@ class SupervisorClient
 
     private function _rpcCall($method, $args=null)
     {
-        global $supervisor_unix_domain_socket;
-
-        $sock = fsockopen($this->_socketPath, null, $errno, $errstr);
+        $sock = fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
 
         if (!$sock) {
             throw new Exception(printf("Cannot open socket: Error %d: \"%s\""), $errno, $errstr);
