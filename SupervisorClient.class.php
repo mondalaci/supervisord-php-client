@@ -249,10 +249,4 @@ class SupervisorClient
     }
 }
 
-//$supervisor_unix_domain_socket = 'unix:///var/run/supervisor.sock';
-//var_dump(supervisor_rpc_call('getAPIVersion', null, true));
-//var_dump(supervisor_rpc_call('getAllProcessInfo', null, true));
-//$supervisorClient = new SupervisorClient('unix:///var/run/supervisor.sock');
-//var_dump($supervisorClient->readLog(-1000));
-
 ?>
