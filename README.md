@@ -16,7 +16,7 @@ Instantiate the client for [[unix_http_server]](http://supervisord.org/configura
 ```php
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 ```
-- or -
+or
 
 Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
