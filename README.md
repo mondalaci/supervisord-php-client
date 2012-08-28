@@ -15,7 +15,7 @@ For http://supervisord.org/configuration.html#unix-http-server-section-values
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 ```
 
-For http://supervisord.org/configuration.html#inet-http-server-section-values
+For [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
 ```
