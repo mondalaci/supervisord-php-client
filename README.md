@@ -20,6 +20,7 @@ For http://supervisord.org/configuration.html#inet-http-server-section-values
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
 ```
 
+```php
 $all_process_info = $supervisor->getAllProcessInfo();  
 var_dump($all_process_info);
 ```
