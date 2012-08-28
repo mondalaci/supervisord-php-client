@@ -1,9 +1,11 @@
 <?php
 
-// For more information about these calls visit http://supervisord.org/api.html
+// For more information regarding these calls visit http://supervisord.org/api.html
 
 class SupervisorClient
 {
+    const chunkSize = 8192;
+
     private $_socketPath = NULL;
 
     function __construct($socketPath)
@@ -171,21 +173,49 @@ class SupervisorClient
             throw new Exception(printf("Cannot open socket: Error %d: \"%s\""), $errno, $errstr);
         }
 
-        stream_set_timeout($sock, 0, 10000);
-
         $xml_rpc = xmlrpc_encode_request("supervisor.$method", $args, array('encoding'=>'utf-8'));
-        $http_request = "POST /RPC2 HTTP/1.1\r\nContent-Length: ". strlen($xml_rpc) . "\r\n\r\n$xml_rpc";
+        $http_request = "POST /RPC2 HTTP/1.1\r\n".
+                        "Content-Length: " . strlen($xml_rpc) .
+                        "\r\n\r\n" .
+                        $xml_rpc;
         fwrite($sock, $http_request);
 
         $http_response = '';
-        while (($buf = fread($sock, 1000000)) != '' ) {
-            $http_response .= $buf;
-        }
+        $header_length = null;
+        $content_length = null;
 
-        list($response_header, $response_xml) = explode("\r\n\r\n", $http_response, 2);
-        $response = simplexml_load_string($response_xml);
+        do {
+            $http_response .= fread($sock, self::chunkSize);
 
-        $response = xmlrpc_decode($response_xml);
+            if (is_null($header_length)) {
+                $header_length = strpos($http_response, "\r\n\r\n");
+            }
+
+            if (is_null($content_length) && !is_null($header_length)) {
+                $header = substr($http_response, 0, $header_length);
+                $header_lines = explode("\r\n", $header);
+                $header_fields = array_slice($header_lines, 1);  // Shave off the HTTP status code.
+
+                foreach ($header_fields as $header_field) {
+                    list($header_name, $header_value) = explode(': ', $header_field);
+                    if ($header_name == 'Content-Length') {
+                        $content_length = $header_value;
+                    }
+                }
+
+                if (is_null($content_length)) {
+                    throw new Exception('No Content-Length field found in the HTTP header.');
+                }
+            }
+
+            $body_start_pos = $header_length + strlen("\r\n\r\n");
+            $body_length = strlen($http_response) - $body_start_pos;
+
+        } while ($body_length < $content_length);
+
+        $body = substr($http_response, $body_start_pos);
+        $response = xmlrpc_decode($body);
+
         if (is_array($response) && xmlrpc_is_fault($response)) {
             throw new Exception($response['faultString'], $response['faultCode']);
         }
