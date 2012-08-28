@@ -6,24 +6,24 @@ A PHP client library for [supervisor](http://supervisord.org) which utilizes its
 Usage
 -----
 
-Include the library:
+1) Include the library:
 
 ```php
 require 'SupervisorClient.php';
 ```
 
-Instantiate the client for [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
+2) Instantiate the client for [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 ```
 or
 
-Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
+2) Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
 ```
 
-Make an RPC call and dump its result:
+3) Make an RPC call and dump its result:
 
 ```php
 $all_process_info = $supervisor->getAllProcessInfo();  
