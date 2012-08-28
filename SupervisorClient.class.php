@@ -161,7 +161,7 @@ class SupervisorClient
 
     // Helper methods
 
-    private function _rpcCall($method, $args=null, $debug=true)
+    private function _rpcCall($method, $args=null)
     {
         global $supervisor_unix_domain_socket;
 
@@ -175,17 +175,11 @@ class SupervisorClient
 
         $xml_rpc = xmlrpc_encode_request("supervisor.$method", $args, array('encoding'=>'utf-8'));
         $http_request = "POST /RPC2 HTTP/1.1\r\nContent-Length: ". strlen($xml_rpc) . "\r\n\r\n$xml_rpc";
-        if ($debug) {
-            print "* Request:\n$xml_rpc";
-        }
         fwrite($sock, $http_request);
 
         $http_response = '';
         while (($buf = fread($sock, 1000000)) != '' ) {
             $http_response .= $buf;
-        }
-        if ($debug) {
-            print "* Response:\n$http_response\n";
         }
 
         list($response_header, $response_xml) = explode("\r\n\r\n", $http_response, 2);
