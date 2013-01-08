@@ -211,7 +211,7 @@ class SupervisorClient
 
     function logMessage($msg, $level = "INFO")
     {
-        return $this->rpcCall('twiddler', 'log', array($msg, $level));
+        return $this->_rpcCall('twiddler', 'log', array($msg, $level));
     }
 
     // Implementation
