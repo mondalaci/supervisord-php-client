@@ -6,6 +6,8 @@
  * For more information regarding these calls visit http://supervisord.org/api.html
  */
 
+namespace SupervisorClient;
+
 class SupervisorClient
 {
     const chunkSize = 8192;
