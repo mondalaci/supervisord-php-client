@@ -1,0 +1,9 @@
+{
+  "name": "ac/supervisor-client",
+  "type": "library",
+  "description": "Client library for supervisor",
+  "keywords": ["supervisor", "supervisord"],
+  "require": {
+    "php": ">=5.3.0"
+  }
+}
