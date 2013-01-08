@@ -4,8 +4,8 @@
   "description": "Client library for supervisor",
   "keywords": ["supervisor", "supervisord"],
   "autoload": {
-    "psr-0": {"SupervisorClient", "src/"}
-  }
+    "psr-0": {"SupervisorClient": "src/"}
+  },
   "require": {
     "php": ">=5.3.0"
   }
