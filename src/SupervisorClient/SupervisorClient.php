@@ -8,6 +8,8 @@
 
 namespace SupervisorClient;
 
+use Exception;
+
 class SupervisorClient
 {
     const chunkSize = 8192;
