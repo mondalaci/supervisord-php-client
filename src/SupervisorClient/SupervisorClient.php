@@ -93,19 +93,29 @@ class SupervisorClient
         return $this->_rpcCall('supervisor', 'getAllProcessInfo');
     }
 
-    function startProcess($processName, $wait=true)
-    {
-        return $this->_rpcCall('supervisor', 'startProcess', $wait);
-    }
-
     function startAllProcesses($wait=true)
     {
         return $this->_rpcCall('supervisor', 'startAllProcesses', $wait);
     }
 
+    function startProcess($processName, $wait=true)
+    {
+        return $this->_rpcCall('supervisor', 'startProcess', array($processName, $wait));
+    }
+
     function startProcessGroup($groupName, $wait=true)
     {
         return $this->_rpcCall('supervisor', 'startProcessGroup', array($groupName, $wait));
+    }
+
+    function stopAllProcesses($wait=true)
+    {
+        return $this->_rpcCall('supervisor', 'stopAllProcesses', $wait);
+    }
+
+    function stopProcess($processName, $wait=true)
+    {
+        return $this->_rpcCall('supervisor', 'stopProcess', array($processName, $wait));
     }
 
     function stopProcessGroup($groupName, $wait=true)
@@ -216,8 +226,10 @@ class SupervisorClient
 
     // Implementation
 
-    private function _rpcCall($namespace, $method, $args=null)
+    private function _rpcCall($namespace, $method, $args=[])
     {
+        if (!is_array($args)) { $args = array($args); }
+
         // Open socket if needed.
 
         if (is_null($this->_socket)) {
