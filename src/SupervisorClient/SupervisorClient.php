@@ -38,153 +38,153 @@ class SupervisorClient
 
     function getAPIVersion()
     {
-        return $this->_rpcCall('getAPIVersion');
+        return $this->_rpcCall('supervisor', 'getAPIVersion');
     }
 
     function getSupervisorVersion()
     {
-        return $this->_rpcCall('getSupervisorVersion');
+        return $this->_rpcCall('supervisor', 'getSupervisorVersion');
     }
 
     function getIdentification()
     {
-        return $this->_rpcCall('getIdentification');
+        return $this->_rpcCall('supervisor', 'getIdentification');
     }
 
     function getState()
     {
-        return $this->_rpcCall('getState');
+        return $this->_rpcCall('supervisor', 'getState');
     }
 
     function getPID()
     {
-        return $this->_rpcCall('getPID');
+        return $this->_rpcCall('supervisor', 'getPID');
     }
 
     function readLog($offset, $length=0)
     {
-        return $this->_rpcCall('readLog', array($offset, $length));
+        return $this->_rpcCall('supervisor', 'readLog', array($offset, $length));
     }
 
     function clearLog()
     {
-        return $this->_rpcCall('clearLog');
+        return $this->_rpcCall('supervisor', 'clearLog');
     }
 
     function shutdown()
     {
-        return $this->_rpcCall('shutdown');
+        return $this->_rpcCall('supervisor', 'shutdown');
     }
 
     function restart()
     {
-        return $this->_rpcCall('restart');
+        return $this->_rpcCall('supervisor', 'restart');
     }
 
     // Process Control methods
 
     function getProcessInfo($processName)
     {
-        return $this->_rpcCall('getProcessInfo', $processName);
+        return $this->_rpcCall('supervisor', 'getProcessInfo', $processName);
     }
 
     function getAllProcessInfo()
     {
-        return $this->_rpcCall('getAllProcessInfo');
+        return $this->_rpcCall('supervisor', 'getAllProcessInfo');
     }
 
     function startProcess($processName, $wait=true)
     {
-        return $this->_rpcCall('startProcess', $wait);
+        return $this->_rpcCall('supervisor', 'startProcess', $wait);
     }
 
     function startAllProcesses($wait=true)
     {
-        return $this->_rpcCall('startAllProcesses', $wait);
+        return $this->_rpcCall('supervisor', 'startAllProcesses', $wait);
     }
 
     function startProcessGroup($groupName, $wait=true)
     {
-        return $this->_rpcCall('startProcessGroup', array($groupName, $wait));
+        return $this->_rpcCall('supervisor', 'startProcessGroup', array($groupName, $wait));
     }
 
     function stopProcessGroup($groupName, $wait=true)
     {
-        return $this->_rpcCall('stopProcessGroup', array($groupName, $wait));
+        return $this->_rpcCall('supervisor', 'stopProcessGroup', array($groupName, $wait));
     }
 
     function sendProcessStdin($processName, $chars)
     {
-        return $this->_rpcCall('sendProcessStdin', array($processName, $chars));
+        return $this->_rpcCall('supervisor', 'sendProcessStdin', array($processName, $chars));
     }
 
     function sendRemoteCommEvent($eventType, $eventData)
     {
-        return $this->_rpcCall('sendRemoteCommEvent', array($eventType, $eventData));
+        return $this->_rpcCall('supervisor', 'sendRemoteCommEvent', array($eventType, $eventData));
     }
 
     function addProcessGroup($processName)
     {
-        return $this->_rpcCall('addProcessGroup', $processName);
+        return $this->_rpcCall('supervisor', 'addProcessGroup', $processName);
     }
 
     // Process Logging methods
 
     function readProcessStdoutLog($processName, $offset, $length)
     {
-        return $this->_rpcCall('readProcessStdoutLog', array($processName, $offset, $length));
+        return $this->_rpcCall('supervisor', 'readProcessStdoutLog', array($processName, $offset, $length));
     }
 
     function readProcessStderrLog($processName, $offset, $length)
     {
-        return $this->_rpcCall('readProcessStderrLog', array($processName, $offset, $length));
+        return $this->_rpcCall('supervisor', 'readProcessStderrLog', array($processName, $offset, $length));
     }
 
     function tailProcessStdoutLog($processName, $offset, $length)
     {
-        return $this->_rpcCall('tailProcessStdoutLog', array($processName, $offset, $length));
+        return $this->_rpcCall('supervisor', 'tailProcessStdoutLog', array($processName, $offset, $length));
     }
 
     function tailProcessStderrLog($processName, $offset, $length)
     {
-        return $this->_rpcCall('tailProcessStderrLog', array($processName, $offset, $length));
+        return $this->_rpcCall('supervisor', 'tailProcessStderrLog', array($processName, $offset, $length));
     }
 
     function clearProcessLogs($processName)
     {
-        return $this->_rpcCall('clearProcessLogs', $processName);
+        return $this->_rpcCall('supervisor', 'clearProcessLogs', $processName);
     }
 
     function clearAllProcessLogs()
     {
-        return $this->_rpcCall('clearAllProcessLogs');
+        return $this->_rpcCall('supervisor', 'clearAllProcessLogs');
     }
 
     // System methods
 
     function listMethods()
     {
-        return $this->_rpcCall('listMethods');
+        return $this->_rpcCall('system', 'listMethods');
     }
 
     function methodHelp($methodName)
     {
-        return $this->_rpcCall('methodHelp', $methodName);
+        return $this->_rpcCall('system', 'methodHelp', $methodName);
     }
 
     function methodSignature($methodSignature)
     {
-        return $this->_rpcCall('methodSignature', $methodSignature);
+        return $this->_rpcCall('system', 'methodSignature', $methodSignature);
     }
 
     function multicall($calls)
     {
-        return $this->_rpcCall('multicall', $calls);
+        return $this->_rpcCall('system', 'multicall', $calls);
     }
 
-    // Helper methods
+    // Implementation
 
-    private function _rpcCall($method, $args=null)
+    private function _rpcCall($namespace, $method, $args=null)
     {
         // Open socket if needed.
 
@@ -198,7 +198,7 @@ class SupervisorClient
 
         // Send request.
 
-        $xml_rpc = xmlrpc_encode_request("supervisor.$method", $args, array('encoding'=>'utf-8'));
+        $xml_rpc = xmlrpc_encode_request("$namespace.$method", $args, array('encoding'=>'utf-8'));
         $http_request = "POST /RPC2 HTTP/1.1\r\n".
                         "Content-Length: " . strlen($xml_rpc) .
                         "\r\n\r\n" .
