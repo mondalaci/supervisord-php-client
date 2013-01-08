@@ -182,6 +182,38 @@ class SupervisorClient
         return $this->_rpcCall('system', 'multicall', $calls);
     }
 
+    // Methods added by the Twiddler RPC extension from
+    // https://github.com/mnaberez/supervisor_twiddler
+
+    function getTwiddlerAPIVersion()
+    {
+        return $this->_rpcCall('twiddler', 'getAPIVersion');
+    }
+
+    function getGroupNames()
+    {
+        return $this->_rpcCall('twiddler', 'getGroupNames');
+    }
+
+    function addProgramToGroup($group, $program, $options=[])
+    {
+        return $this->_rpcCall('twiddler', 'addProgramToGroup',
+            array($group, $program, $options)
+        );
+    }
+
+    function removeProcessFromGroup($group, $process_name)
+    {
+        return $this->_rpcCall('twiddler', 'removeProcessFromGroup',
+            array($group, $process_name)
+        );
+    }
+
+    function logMessage($msg, $level = "INFO")
+    {
+        return $this->rpcCall('twiddler', 'log', array($msg, $level));
+    }
+
     // Implementation
 
     private function _rpcCall($namespace, $method, $args=null)
