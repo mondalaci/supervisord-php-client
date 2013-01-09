@@ -3,6 +3,8 @@ supervisord PHP client
 
 A PHP client library for [supervisor](http://supervisord.org) which utilizes [its XML-RPC interface](http://supervisord.org/api.html).
 
+This package has been submitted to Packagist so you can install it [from there](https://packagist.org/packages/mondalaci/supervisor-client).
+
 Usage
 -----
 
