@@ -1,5 +1,5 @@
 {
-  "name": "ac/supervisor-client",
+  "name": "mondalaci/supervisor-client",
   "type": "library",
   "description": "Client library for supervisor",
   "keywords": ["supervisor", "supervisord"],
