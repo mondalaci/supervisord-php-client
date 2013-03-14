@@ -31,12 +31,7 @@ class SupervisorClient
     {
         $this->_hostname = $hostname;
         $this->_port = $port;
-        if ($timeout == null)
-        {
-            $this->_timeout = ini_get("default_socket_timeout");
-        } else {
-            $this->_timeout = $timeout;
-        }
+        $this->_timeout = is_null($timeout) ? ini_get("default_socket_timeout") : $timeout;
     }
 
     // Status and Control methods
