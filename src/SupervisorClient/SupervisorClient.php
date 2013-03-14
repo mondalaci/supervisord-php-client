@@ -236,7 +236,7 @@ class SupervisorClient
             $this->_socket = fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
 
             if (!$this->_socket) {
-                throw new Exception(printf("Cannot open socket: Error %d: \"%s\""), $errno, $errstr);
+                throw new Exception(printf("Cannot open socket: Error %d: \"%s\"", $errno, $errstr));
             }
         }
 
