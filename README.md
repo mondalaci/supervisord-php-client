@@ -22,7 +22,7 @@ or
 
 2) Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
-$supervisor = new SupervisorClient('YourDomain.com', 9001);
+$supervisor = new SupervisorClient('YourDomain.com', 9001, 1);
 ```
 
 3) Make an RPC call and dump its result:
