@@ -242,7 +242,7 @@ class SupervisorClient
 
         // Send request.
 
-        $xml_rpc = xmlrpc_encode_request("$namespace.$method", $args, array('encoding'=>'utf-8'));
+        $xml_rpc = \xmlrpc_encode_request("$namespace.$method", $args, array('encoding'=>'utf-8'));
         $http_request = "POST /RPC2 HTTP/1.1\r\n".
                         "Content-Length: " . strlen($xml_rpc) .
                         "\r\n\r\n" .
@@ -287,9 +287,9 @@ class SupervisorClient
         // Parse response.
 
         $body = substr($http_response, $body_start_pos);
-        $response = xmlrpc_decode($body);
+        $response = \xmlrpc_decode($body);
 
-        if (is_array($response) && xmlrpc_is_fault($response)) {
+        if (is_array($response) && \xmlrpc_is_fault($response)) {
             throw new Exception($response['faultString'], $response['faultCode']);
         }
 
