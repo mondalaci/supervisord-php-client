@@ -207,16 +207,12 @@ class SupervisorClient
 
     function addProgramToGroup($group, $program, $options=[])
     {
-        return $this->_rpcCall('twiddler', 'addProgramToGroup',
-            array($group, $program, $options)
-        );
+        return $this->_rpcCall('twiddler', 'addProgramToGroup', array($group, $program, $options));
     }
 
-    function removeProcessFromGroup($group, $process_name)
+    function removeProcessFromGroup($group, $processName)
     {
-        return $this->_rpcCall('twiddler', 'removeProcessFromGroup',
-            array($group, $process_name)
-        );
+        return $this->_rpcCall('twiddler', 'removeProcessFromGroup', array($group, $processName));
     }
 
     function logMessage($msg, $level = "INFO")
@@ -296,5 +292,3 @@ class SupervisorClient
         return $response;
     }
 }
-
-?>
