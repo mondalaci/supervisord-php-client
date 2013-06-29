@@ -224,7 +224,9 @@ class SupervisorClient
 
     private function _rpcCall($namespace, $method, $args=[])
     {
-        if (!is_array($args)) { $args = array($args); }
+        if (!is_array($args)) {
+            $args = array($args);
+        }
 
         // Open socket if needed.
 
