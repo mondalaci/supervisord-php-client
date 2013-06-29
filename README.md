@@ -8,10 +8,11 @@ This package has been submitted to Packagist so you can install it [from there](
 Usage
 -----
 
-1) Include the library:
+1) Include the library and import the class:
 
 ```php
 require 'SupervisorClient.php';
+use SupervisorClient\SupervisorClient;
 ```
 
 2) Instantiate the client for [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
