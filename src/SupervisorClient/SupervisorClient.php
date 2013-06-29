@@ -205,7 +205,7 @@ class SupervisorClient
         return $this->_rpcCall('twiddler', 'getGroupNames');
     }
 
-    function addProgramToGroup($group, $program, $options=[])
+    function addProgramToGroup($group, $program, $options=array())
     {
         return $this->_rpcCall('twiddler', 'addProgramToGroup', array($group, $program, $options));
     }
