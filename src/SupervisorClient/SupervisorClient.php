@@ -222,7 +222,7 @@ class SupervisorClient
 
     // Implementation
 
-    private function _rpcCall($namespace, $method, $args=[])
+    private function _rpcCall($namespace, $method, $args=array())
     {
         if (!is_array($args)) {
             $args = array($args);
