@@ -285,7 +285,7 @@ class SupervisorClient
         // Parse response.
 
         $body = substr($http_response, $body_start_pos);
-        $response = \xmlrpc_decode($body);
+        $response = \xmlrpc_decode($body, 'utf-8');
 
         if (is_array($response) && \xmlrpc_is_fault($response)) {
             throw new Exception($response['faultString'], $response['faultCode']);
