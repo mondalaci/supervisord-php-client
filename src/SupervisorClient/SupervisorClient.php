@@ -81,6 +81,11 @@ class SupervisorClient
         return $this->_rpcCall('supervisor', 'restart');
     }
 
+    function reloadConfig()
+    {
+        return $this->_rpcCall('supervisor', 'reloadConfig');
+    }
+
     // Process Control methods
 
     function getProcessInfo($processName)
