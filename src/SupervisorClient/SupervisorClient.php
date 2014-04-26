@@ -17,6 +17,8 @@ class SupervisorClient
     private $_hostname = null;
     private $_port = null;
     private $_timeout = null;
+    private $_username = null;
+    private $_password = null;
     private $_socket = null;
 
     /**
@@ -26,12 +28,16 @@ class SupervisorClient
      * @param string $hostname  The hostname.
      * @param int $port  The port number.
      * @param float $timeout  The connection timeout, in seconds.
+     * @param string $username  The username.
+     * @param string $password  The password.
      */
-    function __construct($hostname, $port=-1, $timeout=null)
+    function __construct($hostname, $port=-1, $timeout=null, $username = null, $password = null)
     {
         $this->_hostname = $hostname;
         $this->_port = $port;
         $this->_timeout = is_null($timeout) ? ini_get("default_socket_timeout") : $timeout;
+        $this->_username = $username;
+        $this->_password = $password;
     }
 
     // Status and Control methods
@@ -243,11 +249,18 @@ class SupervisorClient
             }
         }
 
+        // Authorization
+        $authorization = '';
+        if (!is_null($this->_username) && !is_null($this->_password)) {
+            $authorization = "\r\nAuthorization: Basic " . base64_encode($this->_username.':'.$this->_password);
+        }
+
         // Send request.
 
         $xml_rpc = \xmlrpc_encode_request("$namespace.$method", $args, array('encoding'=>'utf-8'));
         $http_request = "POST /RPC2 HTTP/1.1\r\n".
                         "Content-Length: " . strlen($xml_rpc) .
+                        $authorization .
                         "\r\n\r\n" .
                         $xml_rpc;
         fwrite($this->_socket, $http_request);
