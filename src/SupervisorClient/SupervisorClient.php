@@ -239,14 +239,12 @@ class SupervisorClient
             $args = array($args);
         }
 
-        // Open socket if needed.
+        // Open socket
 
-        if (is_null($this->_socket)) {
-            $this->_socket = fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
+        $this->_socket = fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
 
-            if (!$this->_socket) {
-                throw new Exception(sprintf("Cannot open socket: Error %d: \"%s\"", $errno, $errstr));
-            }
+        if (!$this->_socket) {
+            throw new Exception(sprintf("Cannot open socket: Error %d: \"%s\"", $errno, $errstr));
         }
 
         // Assemble authorization header field.
@@ -301,6 +299,10 @@ class SupervisorClient
             $body_length = strlen($http_response) - $body_start_pos;
 
         } while ($body_length < $content_length);
+
+        // Close socket
+
+        fclose($this->_socket);
 
         // Parse response.
 
