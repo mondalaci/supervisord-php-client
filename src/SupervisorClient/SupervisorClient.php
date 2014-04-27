@@ -31,7 +31,7 @@ class SupervisorClient
      * @param string $username  The username.
      * @param string $password  The password.
      */
-    function __construct($hostname, $port=-1, $timeout=null, $username = null, $password = null)
+    function __construct($hostname, $port=-1, $timeout=null, $username=null, $password=null)
     {
         $this->_hostname = $hostname;
         $this->_port = $port;
