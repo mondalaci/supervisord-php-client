@@ -15,15 +15,18 @@ require 'SupervisorClient.php';
 use SupervisorClient\SupervisorClient;
 ```
 
-2) Instantiate the client for [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
+2A) Instantiate the client for [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
+// - OR -
+$supervisor = new SupervisorClient('unix:///var/run/supervisor.sock', -1, 'MyUserName', 'MyPass');
 ```
-or
 
-2) Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
+2B) Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
+// - OR -
+$supervisor = new SupervisorClient('YourDomain.com', 9001, 'MyUserName', 'MyPass');
 ```
 
 3) Make an RPC call and dump its result:
