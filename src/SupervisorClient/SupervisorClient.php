@@ -249,7 +249,8 @@ class SupervisorClient
             }
         }
 
-        // Authorization
+        // Assemble authorization header field.
+
         $authorization = '';
         if (!is_null($this->_username) && !is_null($this->_password)) {
             $authorization = "\r\nAuthorization: Basic " . base64_encode($this->_username.':'.$this->_password);
