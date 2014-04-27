@@ -247,7 +247,6 @@ class SupervisorClient
             if (!$this->_socket) {
                 throw new Exception(sprintf("Cannot open socket: Error %d: \"%s\"", $errno, $errstr));
             }
-            stream_set_timeout($this->_socket, $this->_timeout);
         }
 
         // Assemble authorization header field.
@@ -269,6 +268,7 @@ class SupervisorClient
 
         // Receive response.
 
+        stream_set_timeout($this->_socket, $this->_timeout);
         $http_response = '';
         $header_length = null;
         $content_length = null;
