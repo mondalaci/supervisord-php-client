@@ -242,7 +242,7 @@ class SupervisorClient
         // Open socket if needed.
 
         if (is_null($this->_socket)) {
-            $this->_socket = fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
+            $this->_socket = @fsockopen($this->_hostname, $this->_port, $errno, $errstr, $this->_timeout);
 
             if (!$this->_socket) {
                 throw new Exception(sprintf("Cannot open socket: Error %d: \"%s\"", $errno, $errstr));
@@ -312,5 +312,12 @@ class SupervisorClient
         }
 
         return $response;
+    }
+
+    public function __destruct()
+    {
+        if (is_resource($this->_socket)) {
+            fclose($this->_socket);
+        }
     }
 }
