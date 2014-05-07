@@ -313,4 +313,11 @@ class SupervisorClient
 
         return $response;
     }
+
+    public function __destruct()
+    {
+        if (is_resource($this->_socket)) {
+            fclose($this->_socket);
+        }
+    }
 }
