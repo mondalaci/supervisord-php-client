@@ -186,6 +186,26 @@ class SupervisorClient
     }
 
     /**
+     * Get info about all available process configurations.
+     *
+     * Each struct represents a single process (i.e. groups get flattened).
+     *
+     * array[process]
+     *     ['group']           string  Name of the process' group
+     *     ['name']            string  Name of the process
+     *     ['inuse']           bool
+     *     ['autostart']       bool
+     *     ['process_prio']    int
+     *     ['group_prio']      int
+     *
+     * @return array
+     */
+    public function getAllConfigInfo()
+    {
+        return $this->_rpcCall('supervisor', 'getAllConfigInfo');
+    }
+
+    /**
      * Get info about a process named name
      *
      * array['name']            string  Name of the process
