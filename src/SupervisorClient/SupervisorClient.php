@@ -496,6 +496,17 @@ class SupervisorClient
     // https://github.com/mnaberez/supervisor_twiddler
 
     /**
+     * Checks if the Twiddler extension is installed and configured in supervisord.conf
+     *
+     * @return bool true if the extension is available, else false
+     */
+    public function isTwiddlerAvailable()
+    {
+        $methods = $this->listMethods();
+        return in_array('twiddler.getAPIVersion', $methods);
+    }
+
+    /**
      * Return the version of the Twiddler API
      *
      * @return string
