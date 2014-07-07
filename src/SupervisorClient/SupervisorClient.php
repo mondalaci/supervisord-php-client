@@ -672,7 +672,7 @@ class SupervisorClient
 
         // Create the HTTP request
         $xml_rpc = \xmlrpc_encode_request("$namespace.$method", $args, array('encoding' => 'utf-8'));
-        $httpRequest = "POST /RPC2 HTTP/1.1\r\n" .
+        $httpRequest = "POST /RPC2 HTTP/1.0\r\n" .
             "Content-Length: " . strlen($xml_rpc) .
             $authorization .
             "\r\n\r\n" .
