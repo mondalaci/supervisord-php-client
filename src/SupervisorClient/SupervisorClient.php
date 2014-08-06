@@ -576,7 +576,7 @@ class SupervisorClient
             $args = array($args);
         }
 
-        // Send the request to the supervisor XML-RPC API
+        // Send the request to the supervisor XML-RPC API.
         $this->_doRequest($namespace, $method, $args);
 
         // Receive response.
@@ -594,7 +594,7 @@ class SupervisorClient
             if (is_null($contentLength) && !is_null($headerLength)) {
                 $header = substr($httpResponse, 0, $headerLength);
                 $headerLines = explode("\r\n", $header);
-                $headerFields = array_slice($headerLines, 1); // Shave off the HTTP status code.
+                $headerFields = array_slice($headerLines, 1);  // Shave off the HTTP status code.
 
                 foreach ($headerFields as $headerField) {
                     list($header_name, $headerValue) = explode(': ', $headerField);
@@ -632,17 +632,19 @@ class SupervisorClient
      */
     protected function _getSocket()
     {
-        // Check if the socket already exists and is open, if it is return it
         if (is_resource($this->_socket)) {
             if (feof($this->_socket)) {
+                // Supervisor sometimes seems to close the socket after a request is completed, which
+                // causes the following request made by SupervisorClient to fail mysteriously with an
+                // error about a missing content-length header.  This check takes care of this issue.
                 fclose($this->_socket);
             } else {
+                // Check if the socket already exists and is open, if it is return it.
                 return $this->_socket;
             }
         }
 
-
-        // Open the socket
+        // Open the socket.
         $this->_socket = @fsockopen(
             $this->_hostname,
             $this->_port,
@@ -669,13 +671,13 @@ class SupervisorClient
      */
     protected function _doRequest($namespace, $method, $args)
     {
-        // Create the authorization header
+        // Create the authorization header.
         $authorization = '';
         if (!is_null($this->_username) && !is_null($this->_password)) {
             $authorization = "\r\nAuthorization: Basic " . base64_encode($this->_username . ':' . $this->_password);
         }
 
-        // Create the HTTP request
+        // Create the HTTP request.
         $xml_rpc = \xmlrpc_encode_request("$namespace.$method", $args, array('encoding' => 'utf-8'));
         $httpRequest = "POST /RPC2 HTTP/1.0\r\n" .
             "Content-Length: " . strlen($xml_rpc) .
@@ -683,7 +685,7 @@ class SupervisorClient
             "\r\n\r\n" .
             $xml_rpc;
 
-        // Write the request to the socket
+        // Write the request to the socket.
         fwrite($this->_getSocket(), $httpRequest);
     }
 
