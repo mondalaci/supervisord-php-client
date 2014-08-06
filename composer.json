@@ -1,5 +1,6 @@
 {
   "name": "mondalaci/supervisor-client",
+  "version": "1.0.0",
   "type": "library",
   "description": "Client library for supervisor",
   "keywords": ["supervisor", "supervisord"],
