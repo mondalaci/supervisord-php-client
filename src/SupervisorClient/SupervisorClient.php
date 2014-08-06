@@ -73,7 +73,7 @@ class SupervisorClient
      * This method allows the client to identify with which Supervisor instance it is communicating in the case of
      * environments where multiple Supervisors may be running.
      *
-     * The identification is a string that must be set in Supervisor’s configuration file. This method simply returns
+     * The identification is a string that must be set in Supervisor's configuration file. This method simply returns
      * that value back to the client.
      *
      * @return string
@@ -93,7 +93,7 @@ class SupervisorClient
      * supervisor.shutdown() while the station is in the RUNNING state places the Supervisor in the SHUTDOWN state
      * while it is shutting down.
      *
-     * The supervisor.getState() method provides a means for the client to check Supervisor’s state, both for
+     * The supervisor.getState() method provides a means for the client to check Supervisor's state, both for
      * informational purposes and to ensure that the methods it intends to call will be permitted.
      *
      * array['statecode']   int     State code
@@ -163,7 +163,7 @@ class SupervisorClient
      * Restart the supervisor process
      *
      * This method soft restarts the Supervisor daemon. If any processes are running, they are automatically killed
-     * without warning. Note that the actual UNIX process for Supervisor cannot restart; only Supervisor’s main
+     * without warning. Note that the actual UNIX process for Supervisor cannot restart; only Supervisor's main
      * program loop. This has the effect of resetting the internal states of Supervisor.
      *
      * Unlike most other methods, if Supervisor is in the FATAL state, this method will still function.
@@ -221,7 +221,7 @@ class SupervisorClient
      * array['exitstatus']      int     Exit status (errorlevel) of process, or 0 if the process is still running.
      * array['pid']             int     UNIX process ID (PID) of the process, or 0 if the process is not running.
      *
-     * @param string $processName The name of the process (or ‘group:name’)
+     * @param string $processName The name of the process (or 'group:name')
      * @return array (see above)
      */
     public function getProcessInfo($processName)
@@ -269,7 +269,7 @@ class SupervisorClient
     }
 
     /**
-     * Start all processes in the group named ‘name’
+     * Start all processes in the group named 'name'
      *
      * @param string $groupName The group name
      * @param bool $wait Wait for process to be fully started
@@ -300,7 +300,7 @@ class SupervisorClient
     }
 
     /**
-     * Stop all processes in the group named ‘name’
+     * Stop all processes in the group named 'name'
      *
      * @param string $groupName The group name
      * @param bool $wait Wait for process to be fully started
@@ -313,11 +313,11 @@ class SupervisorClient
 
     /**
      * Send a string of chars to the stdin of the process name. If non-7-bit data is sent (unicode), it is encoded to
-     * utf-8 before being sent to the process’ stdin. If chars is not a string or is not unicode, raise
-     * INCORRECT_PARAMETERS. If the process is not running, raise NOT_RUNNING. If the process’ stdin cannot accept
+     * utf-8 before being sent to the process' stdin. If chars is not a string or is not unicode, raise
+     * INCORRECT_PARAMETERS. If the process is not running, raise NOT_RUNNING. If the process' stdin cannot accept
      * input (e.g. it was closed by the child process), raise NO_FILE.
      *
-     * @param string $processName The process name to send to (or ‘group:name’)
+     * @param string $processName The process name to send to (or 'group:name')
      * @param string $chars The character data to send to the process
      * @return boolean Result always true unless error
      */
@@ -329,7 +329,7 @@ class SupervisorClient
     /**
      * Send an event that will be received by event listener subprocesses subscribing to the RemoteCommunicationEvent.
      *
-     * @param string $eventType String for the “type” key in the event header
+     * @param string $eventType String for the 'type' key in the event header
      * @param string $eventData Data for the event body
      * @return boolean Result always true unless error
      */
@@ -361,9 +361,9 @@ class SupervisorClient
     }
 
     /**
-     * Read length bytes from name’s stdout log starting at offset
+     * Read length bytes from name's stdout log starting at offset
      *
-     * @param string $processName The name of the process (or ‘group:name’)
+     * @param string $processName The name of the process (or 'group:name')
      * @param int $offset Offset to start reading from.
      * @param int $length Number of bytes to read from the log.
      * @return string
@@ -374,9 +374,9 @@ class SupervisorClient
     }
 
     /**
-     * Read length bytes from name’s stderr log starting at offset
+     * Read length bytes from name's stderr log starting at offset
      *
-     * @param string $processName The name of the process (or ‘group:name’)
+     * @param string $processName The name of the process (or 'group:name')
      * @param int $offset Offset to start reading from.
      * @param int $length Number of bytes to read from the log.
      * @return string
@@ -390,12 +390,12 @@ class SupervisorClient
      * Provides a more efficient way to tail the (stdout) log than readProcessStdoutLog(). Use readProcessStdoutLog()
      * to read chunks and tailProcessStdoutLog() to tail.
      *
-     * Requests (length) bytes from the (name)’s log, starting at (offset). If the total log size is greater than
+     * Requests (length) bytes from the (name)'s log, starting at (offset). If the total log size is greater than
      * (offset + length), the overflow flag is set and the (offset) is automatically increased to position the buffer
      * at the end of the log. If less than (length) bytes are available, the maximum number of available bytes will be
      * returned. (offset) returned is always the last offset in the log +1.
      *
-     * @param string $processName The name of the process (or ‘group:name’)
+     * @param string $processName The name of the process (or 'group:name')
      * @param int $offset Offset to start reading from.
      * @param int $length Number of bytes to read from the log.
      * @return string
@@ -409,12 +409,12 @@ class SupervisorClient
      * Provides a more efficient way to tail the (stderr) log than readProcessStderrLog(). Use readProcessStderrLog()
      * to read chunks and tailProcessStderrLog() to tail.
      *
-     * Requests (length) bytes from the (name)’s log, starting at (offset). If the total log size is greater than
+     * Requests (length) bytes from the (name)'s log, starting at (offset). If the total log size is greater than
      * (offset + length), the overflow flag is set and the (offset) is automatically increased to position the buffer
      * at the end of the log. If less than (length) bytes are available, the maximum number of available bytes will
      * be returned. (offset) returned is always the last offset in the log +1.
      *
-     * @param string $processName The name of the process (or ‘group:name’)
+     * @param string $processName The name of the process (or 'group:name')
      * @param int $offset Offset to start reading from.
      * @param int $length Number of bytes to read from the log.
      * @return string
@@ -427,7 +427,7 @@ class SupervisorClient
     /**
      * Clear the stdout and stderr logs for the named process and reopen them.
      *
-     * @param string $processName The name of the process (or ‘group:name’)
+     * @param string $processName The name of the process (or 'group:name')
      * @return boolean Always true unless error
      */
     public function clearProcessLogs($processName)
@@ -456,7 +456,7 @@ class SupervisorClient
     }
 
     /**
-     * Return a string showing the method’s documentation
+     * Return a string showing the method's documentation
      *
      * @param string $methodName The name of the method.
      * @return string The documentation for the method name.
@@ -480,8 +480,8 @@ class SupervisorClient
 
     /**
      * Process an array of calls, and return an array of results. Calls should be structs of the form
-     * {‘methodName’: string, ‘params’: array}. Each result will either be a single-item array containing the result
-     * value, or a struct of the form {‘faultCode’: int, ‘faultString’: string}. This is useful when you need to make
+     * {'methodName': string, 'params': array}. Each result will either be a single-item array containing the result
+     * value, or a struct of the form {'faultCode': int, 'faultString': string}. This is useful when you need to make
      * lots of small calls without lots of round trips.
      *
      * @param array $calls An array of call requests
