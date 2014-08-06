@@ -632,10 +632,15 @@ class SupervisorClient
      */
     protected function _getSocket()
     {
-        // Check if the socket already exists, if it is return it
+        // Check if the socket already exists and is open, if it is return it
         if (is_resource($this->_socket)) {
-            return $this->_socket;
+            if (feof($this->_socket)) {
+                fclose($this->_socket);
+            } else {
+                return $this->_socket;
+            }
         }
+
 
         // Open the socket
         $this->_socket = @fsockopen(
