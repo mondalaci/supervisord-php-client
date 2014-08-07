@@ -19,7 +19,6 @@ class SupervisorClient
     protected $_timeout;
     protected $_username;
     protected $_password;
-    protected $_socket;
 
     /**
      * Construct a supervisor client instance.
@@ -577,7 +576,8 @@ class SupervisorClient
         }
 
         // Send the request to the supervisor XML-RPC API.
-        $this->_doRequest($namespace, $method, $args);
+        $socket = $this->_getSocket();
+        $this->_doRequest($socket, $namespace, $method, $args);
 
         // Receive response.
         $httpResponse = '';
@@ -585,7 +585,7 @@ class SupervisorClient
         $contentLength = null;
 
         do {
-            $httpResponse .= fread($this->_getSocket(), self::CHUNK_SIZE);
+            $httpResponse .= fread($socket, self::CHUNK_SIZE);
 
             if (is_null($headerLength)) {
                 $headerLength = strpos($httpResponse, "\r\n\r\n");
@@ -613,6 +613,8 @@ class SupervisorClient
 
         } while ($bodyLength < $contentLength);
 
+        fclose($socket);
+
         // Parse response.
         $body = substr($httpResponse, $bodyStartPosition);
         $response = \xmlrpc_decode($body, 'utf-8');
@@ -632,20 +634,8 @@ class SupervisorClient
      */
     protected function _getSocket()
     {
-        if (is_resource($this->_socket)) {
-            if (feof($this->_socket)) {
-                // Supervisor sometimes seems to close the socket after a request is completed, which
-                // causes the following request made by SupervisorClient to fail mysteriously with an
-                // error about a missing content-length header.  This check takes care of this issue.
-                fclose($this->_socket);
-            } else {
-                // Check if the socket already exists and is open, if it is return it.
-                return $this->_socket;
-            }
-        }
-
         // Open the socket.
-        $this->_socket = @fsockopen(
+        $socket = @fsockopen(
             $this->_hostname,
             $this->_port,
             $errno,
@@ -653,13 +643,13 @@ class SupervisorClient
             $this->_timeout
         );
 
-        if (!$this->_socket) {
+        if (!$socket) {
             throw new Exception(sprintf("Cannot open socket: Error %d: \"%s\"", $errno, $errstr));
         }
 
-        stream_set_timeout($this->_socket, $this->_timeout);
+        stream_set_timeout($socket, $this->_timeout);
 
-        return $this->_socket;
+        return $socket;
     }
 
     /**
@@ -669,7 +659,7 @@ class SupervisorClient
      * @param string $method The method in the namespace
      * @param mixed $args Optional arguments
      */
-    protected function _doRequest($namespace, $method, $args)
+    protected function _doRequest($socket, $namespace, $method, $args)
     {
         // Create the authorization header.
         $authorization = '';
@@ -686,16 +676,6 @@ class SupervisorClient
             $xml_rpc;
 
         // Write the request to the socket.
-        fwrite($this->_getSocket(), $httpRequest);
-    }
-
-    /**
-     * Close the socket when the class destructs
-     */
-    public function __destruct()
-    {
-        if (is_resource($this->_socket)) {
-            fclose($this->_socket);
-        }
+        fwrite($socket, $httpRequest);
     }
 }
