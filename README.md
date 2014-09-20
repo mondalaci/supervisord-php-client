@@ -19,14 +19,14 @@ use SupervisorClient\SupervisorClient;
 ```php
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 // - OR -
-$supervisor = new SupervisorClient('unix:///var/run/supervisor.sock', -1, 'MyUserName', 'MyPass');
+$supervisor = new SupervisorClient('unix:///var/run/supervisor.sock', -1, null, 'MyUserName', 'MyPass');
 ```
 
 2B) Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
 // - OR -
-$supervisor = new SupervisorClient('YourDomain.com', 9001, 'MyUserName', 'MyPass');
+$supervisor = new SupervisorClient('YourDomain.com', 9001, null, 'MyUserName', 'MyPass');
 ```
 
 3) Make an RPC call and dump its result:
