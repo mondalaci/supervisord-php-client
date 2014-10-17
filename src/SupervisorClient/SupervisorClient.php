@@ -597,8 +597,8 @@ class SupervisorClient
                 $headerFields = array_slice($headerLines, 1);  // Shave off the HTTP status code.
 
                 foreach ($headerFields as $headerField) {
-                    list($header_name, $headerValue) = explode(': ', $headerField);
-                    if ($header_name == 'Content-Length') {
+                    list($headerName, $headerValue) = explode(': ', $headerField);
+                    if ($headerName == 'Content-Length') {
                         $contentLength = $headerValue;
                     }
                 }
@@ -678,12 +678,12 @@ class SupervisorClient
         }
 
         // Create the HTTP request.
-        $xml_rpc = \xmlrpc_encode_request("$namespace.$method", $args, array('encoding' => 'utf-8'));
+        $xmlRpc = \xmlrpc_encode_request("$namespace.$method", $args, array('encoding' => 'utf-8'));
         $httpRequest = "POST /RPC2 HTTP/1.0\r\n" .
-            "Content-Length: " . strlen($xml_rpc) .
+            "Content-Length: " . strlen($xmlRpc) .
             $authorization .
             "\r\n\r\n" .
-            $xml_rpc;
+            $xmlRpc;
 
         // Write the request to the socket.
         fwrite($this->_getSocket(), $httpRequest);
