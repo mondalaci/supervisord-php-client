@@ -2,7 +2,7 @@
     "name": "mondalaci/supervisor-client",
     "version": "1.0.0",
     "type": "library",
-    "description": "Client library for supervisor",
+    "description": "PHP library for supervisord",
     "keywords": ["supervisor", "supervisord"],
     "autoload": {
         "psr-0": {"SupervisorClient": "src/"}
