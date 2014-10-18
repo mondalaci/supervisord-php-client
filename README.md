@@ -25,7 +25,7 @@ $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
 ```
 
-3) Set up authentication and/or timeout:
+3) Set up authentication and/or connection timeout:
 
 ```php
 $supervisor->setAuth('username', 'password');
@@ -35,8 +35,8 @@ $supervisor->setTimeout(10000);  // microseconds
 4) Make an RPC call and dump its result:
 
 ```php
-$all_process_info = $supervisor->getAllProcessInfo();
-var_dump($all_process_info);
+$allProcessInfo = $supervisor->getAllProcessInfo();
+var_dump($allProcessInfo);
 ```
 
 The dumped result of the RPC call:
