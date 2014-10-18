@@ -4,7 +4,7 @@
 require '../src/SupervisorClient/SupervisorClient.php';
 use SupervisorClient\SupervisorClient;
 
-function test($configFile, $supervisorClient) {
+function test($configFile, SupervisorClient $supervisorClient) {
     print "> Testing $configFile\n";
     exec('killall supervisord >/dev/null 2>&1');
 
@@ -22,11 +22,16 @@ function test($configFile, $supervisorClient) {
     print ($success ? '✔ Test passed' : '✘ Test failed') . "\n";
 }
 
-test('unix-http-server-without-password.conf',
-     new SupervisorClient('unix:///tmp/supervisor.sock'));
-test('unix-http-server-with-password.conf',
-     new SupervisorClient('unix:///tmp/supervisor.sock', -1, null, 'user', 'password'));
-test('inet-http-server-without-password.conf',
-     new SupervisorClient('localhost', 9001));
-test('inet-http-server-with-password.conf',
-     new SupervisorClient('localhost', 9001, null, 'user', 'password'));
+$supervisor = new SupervisorClient('unix:///tmp/supervisor.sock');
+test('unix-http-server-without-password.conf', $supervisor);
+
+$supervisor = new SupervisorClient('unix:///tmp/supervisor.sock');
+$supervisor->setAuth('user', 'password');
+test('unix-http-server-with-password.conf', $supervisor);
+
+$supervisor = new SupervisorClient('localhost', 9001);
+test('inet-http-server-without-password.conf', $supervisor);
+
+$supervisor = new SupervisorClient('localhost', 9001);
+$supervisor->setAuth('user', 'password');
+test('inet-http-server-with-password.conf', $supervisor);

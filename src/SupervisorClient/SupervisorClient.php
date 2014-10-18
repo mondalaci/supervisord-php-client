@@ -27,17 +27,34 @@ class SupervisorClient
      *
      * @param string $hostname The hostname.
      * @param int $port The port number.
-     * @param float $timeout The connection timeout, in seconds.
-     * @param string $username The username.
-     * @param string $password The password.
      */
-    public function __construct($hostname, $port = -1, $timeout = null, $username = null, $password = null)
+    public function __construct($hostname, $port = -1)
     {
         $this->_hostname = $hostname;
         $this->_port = $port;
-        $this->_timeout = is_null($timeout) ? ini_get("default_socket_timeout") : $timeout;
+        $this->_username = null;
+        $this->_password = null;
+        $this->setTimeout(null);
+    }
+
+    /**
+     * Set the username and password.
+     *
+     * @param string $username The username.
+     * @param string $password The password.
+     */
+    public function setAuth($username, $password) {
         $this->_username = $username;
         $this->_password = $password;
+    }
+
+    /**
+     * Set the connection timeout.
+     *
+     * @param float $timeout The connection timeout, in seconds.
+     */
+    public function setTimeout($timeout) {
+        $this->_timeout = is_null($timeout) ? ini_get("default_socket_timeout") : $timeout;
     }
 
     /**

@@ -18,18 +18,21 @@ use SupervisorClient\SupervisorClient;
 2A) Instantiate the client for [[unix_http_server]](http://supervisord.org/configuration.html#unix-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('unix:///var/run/supervisor.sock');
-// - OR -
-$supervisor = new SupervisorClient('unix:///var/run/supervisor.sock', -1, null, 'MyUserName', 'MyPass');
 ```
 
 2B) Instantiate the client for [[inet_http_server]](http://supervisord.org/configuration.html#inet-http-server-section-values) configuration:
 ```php
 $supervisor = new SupervisorClient('YourDomain.com', 9001);
-// - OR -
-$supervisor = new SupervisorClient('YourDomain.com', 9001, null, 'MyUserName', 'MyPass');
 ```
 
-3) Make an RPC call and dump its result:
+3) Set up authentication and/or timeout:
+
+```php
+$supervisor->setAuth('username', 'password');
+$supervisor->setTimeout(10000);  // microseconds
+```
+
+4) Make an RPC call and dump its result:
 
 ```php
 $all_process_info = $supervisor->getAllProcessInfo();
