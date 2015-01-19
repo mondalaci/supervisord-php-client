@@ -1,3 +1,11 @@
+> **DEPRECATION NOTICE**
+
+> Even though this package is known to be fully functional and free of bugs I do not proactively develop it anymore. I try to address issues and PRs but you're rather encouraged to use SupervisorPHP which is a more fully fledged library.
+
+> https://github.com/supervisorphp/supervisor
+
+> For details see http://supervisorphp.com
+
 supervisord PHP client
 ======================
 
